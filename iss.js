@@ -29,4 +29,24 @@ const fetchMyIP = function (callback) {
   });
 };
 
-module.exports = { fetchMyIP };
+/**
+ * Makes a single API request to retrieve the lat/lng for a given IPv4 address.
+ * Input:
+ *   - The ip (ipv4) address (string)
+ *   - A callback (to pass back an error or the lat/lng object)
+ * Returns (via Callback):
+ *   - An error, if any (nullable)
+ *   - The lat and lng as an object (null if error). Example:
+ *     { latitude: '49.27670', longitude: '-123.13000' }
+ */
+const fetchCoordsByIP = function (ip, callback) {
+  request("http://ipwho.is/" + ip, (error, response, body) => {
+
+    const obj = JSON.parse(body); //to convert string into object
+    //console.log("obj!", obj);
+    const { latitude, longitude } = obj;//returns these 2 key and also values
+    callback(null, { latitude, longitude });
+  });
+};
+
+module.exports = { fetchMyIP, fetchCoordsByIP };
