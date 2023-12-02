@@ -41,9 +41,19 @@ const fetchMyIP = function (callback) {
  */
 const fetchCoordsByIP = function (ip, callback) {
   request("http://ipwho.is/" + ip, (error, response, body) => {
+    if (error) {
+      callback(error, null);
+      return;
+    }
 
     const obj = JSON.parse(body); //to convert string into object
-    //console.log("obj!", obj);
+    // check if "success" is true or not
+    if (!obj.success) {
+      const message = `Success status was ${obj.success}. Server message says: ${obj.message} when fetching for IP ${obj.ip}`;
+      callback(Error(message), null);
+      return;
+    }
+    
     const { latitude, longitude } = obj;//returns these 2 key and also values
     callback(null, { latitude, longitude });
   });
