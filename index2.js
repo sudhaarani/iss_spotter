@@ -8,3 +8,6 @@ nextISSTimesForMyLocation()
       console.log(`Next pass at ${formattedDate} for ${element.duration} seconds!`);
     }
   })
+  .catch((error) => {
+    console.log("It didn't work: ", error.message);
+  });
